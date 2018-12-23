@@ -31,7 +31,7 @@ exp.columns = list(exp.iloc[constants.EXP_NAME_ROW])
     dictionary of all of the orders.
 """
 amazon_rows = {}
-print(exp)
+
 for i in range(exp.shape[0]):
     row = exp.iloc[i]
     if "Amazon" in str(row["Name"]):
@@ -45,3 +45,16 @@ for i in range(exp.shape[0]):
             at_bodega = utils.check_bodega(imp.iloc[indices[0]])
             items = utils.get_items(indices, imp)
             amazon_rows.update({i: transaction.Transaction(at_bodega, items)})
+
+
+
+""" Putting the data back on the sheet. """
+# checking to see if this works.
+
+for row in amazon_rows:
+    if amazon_rows[row].get_bodega() == True:
+        exp.at[row, utils.LOCATION] = "Bodega Bay"
+        #Tested
+    exp.at[row, utils.DESCRIPTION] = amazon_rows[row].get_items()
+
+print(exp.iloc[:, 7])

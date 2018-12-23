@@ -9,6 +9,8 @@ class Utils:
     """Constants for Item extraction"""
     BODEGA = "Shipping Address"
     ITEM = "Title"
+    LOCATION = "Location"
+    DESCRIPTION = "Memo/Description"
 
     def correlate(self, price, date, row):
         d = 1 if price == row[self.AMOUNT] else 0
@@ -24,7 +26,6 @@ class Utils:
 
     """Check to see if this order was made to Bodega Bay"""
     def check_bodega(self, row):
-        # Untested
         return "Bodega Bay" in row[self.BODEGA]
 
     def get_items(self, rows, imp):
@@ -32,3 +33,7 @@ class Utils:
         for i in rows:
             values.append(imp.iloc[i][self.ITEM])
         return values
+
+    """Save files to folder as csv."""
+    def save_df(self, df, path):
+        #working
