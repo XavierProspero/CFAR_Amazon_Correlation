@@ -34,6 +34,10 @@ class Utils:
             values.append(imp.iloc[i][self.ITEM])
         return values
 
-    """Save files to folder as csv."""
-    def save_df(self, df, path):
-        #working
+    """get data from google sheet calls upon fetch"""
+    def get_sheet(self, constants, spread_id, fetch, file):
+        store = file.Storage('fetch/credentials.json')
+        secret = "fetch/credentials.json"
+        # Need to find a way to get the name of the sheet
+
+        return fetch.get_sheet(spread_id, store, secret)

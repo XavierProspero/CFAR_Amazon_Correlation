@@ -4,28 +4,40 @@ import config
 import constants
 import utils
 import transaction
+from oauth2client import file
+from fetch import fetch
 
 """ Initial set up for testing. Will replace one the correlation is finished."""
 
-path = config.CONFIG["test_path"]
 imp_name = config.CONFIG["imp"]
 exp_name = config.CONFIG["exp"]
+store = file.Storage('fetch/credentials.json')
 
 """ Setting up helper functions. """
 utils = utils.Utils()
 cross_correlate = utils.cross_correlate
 
+"""Getting Data from Google"""
+
+
+# exp = utils.get_sheet(constants, exp_name, fetch, file)
+imp = utils.get_sheet(constants, imp_name, fetch, file)
+exp = utils.get_sheet(constants, exp_name, fetch, file)
 try:
-    imp = pd.read_csv(path.strip() + "/{}".format(imp_name))
+    imp1 = pd.read_csv("/Users/xavierprospero/Desktop/CFAR/coding code/test/{}"
+        .format("test_coding_imp - orders_from_20180601_to_20181130_20181204_1015.csv"))
 except FileNotFoundError:
     print('file {} could not be found :('.format(imp_name))
 try:
-    exp = pd.read_csv(path.strip() + "/{}".format(exp_name))
+    exp1 = pd.read_csv("/Users/xavierprospero/Desktop/CFAR/coding code/test/{}"
+        .format("test_coding_exp - Statement of Activity Detail.csv"))
 except FileNotFoundError:
     print('file {} could not be found :('.format(exp_name))
 
 """Renaming the columns"""
+print("local", imp1)
 exp.columns = list(exp.iloc[constants.EXP_NAME_ROW])
+print("pulled", imp)
 
 """Correlating all the data on the amazon sheet and creating a
     dictionary of all of the orders.
@@ -57,4 +69,6 @@ for row in amazon_rows:
         #Tested
     exp.at[row, utils.DESCRIPTION] = amazon_rows[row].get_items()
 
-print(exp.iloc[:, 7])
+# print(exp.iloc[:, 7])
+
+exp.to_csv(path+"/test_csv.csv")
